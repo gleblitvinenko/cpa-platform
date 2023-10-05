@@ -17,10 +17,20 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
+from rest_framework import routers
+
+from offer.views import CategoryViewSet
+
+router = routers.DefaultRouter()
+router.register('', CategoryViewSet, basename="category")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/offers/', include('offer.urls', namespace='offer')),
+    path('api/users/', include('user.urls', namespace='user')),
+    path("api/categories/", include(router.urls)),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/schema/swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger'),
     path("__debug__/", include("debug_toolbar.urls")),
+
 ]
