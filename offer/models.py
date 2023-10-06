@@ -1,6 +1,6 @@
 from django.db import models
 
-from user.models import Brand
+
 
 
 class Category(models.Model):
@@ -21,8 +21,8 @@ class Offer(models.Model):
     price = models.DecimalField(max_digits=7, decimal_places=2)
     category = models.ForeignKey(Category, related_name="offer_category", on_delete=models.CASCADE)
     payout = models.DecimalField(max_digits=7, decimal_places=2)
-    creation_date = models.DateTimeField(auto_now_add=True)
-    brand = models.ForeignKey(Brand, related_name="offers", on_delete=models.CASCADE)
+    creation_date = models.DateTimeField(auto_now_add=True, null=True)
+    brand = models.ForeignKey("user.CustomUser", related_name="offer", on_delete=models.CASCADE, null=True)
 
     def __str__(self) -> str:
         return f"{self.title}"

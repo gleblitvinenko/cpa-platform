@@ -6,9 +6,8 @@ from offer.views import OfferViewSet
 router = routers.DefaultRouter()
 router.register('', OfferViewSet)
 
-
 urlpatterns = [
-    path("", include(router.urls))
+    path("", include(router.urls)),
 ]
 
 app_name = 'offer'

@@ -19,16 +19,20 @@ from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework import routers
 
-from offer.views import CategoryViewSet
+from offer.views import CategoryViewSet, AdminOfferViewSet
 
-router = routers.DefaultRouter()
-router.register('', CategoryViewSet, basename="category")
+router_categories = routers.DefaultRouter()
+router_categories.register('', CategoryViewSet, basename="category")
+
+router_admin_offers = routers.DefaultRouter()
+router_admin_offers.register("", AdminOfferViewSet, basename="admin_offer")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/offers/', include('offer.urls', namespace='offer')),
     path('api/users/', include('user.urls', namespace='user')),
-    path("api/categories/", include(router.urls)),
+    path("api/categories/", include(router_categories.urls)),
+    path("api/admin_offers/", include(router_admin_offers.urls)),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/schema/swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger'),
     path("__debug__/", include("debug_toolbar.urls")),

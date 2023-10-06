@@ -1,7 +1,11 @@
+import random
+import string
+
 from rest_framework import serializers
 
 from offer import models
-from offer.models import Category
+from offer.models import Category, Offer
+from user.models import CustomUserOffer
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -25,7 +29,7 @@ class OfferDetailSerializer(OfferListSerializer):
 
     class Meta:
         model = models.Offer
-        fields = ('id', 'title', 'is_active', 'description', 'category', 'payout', 'price', 'creation_date')  # TODO brand
+        fields = ('id', 'title', 'is_active', 'description', 'category', 'payout', 'price', 'creation_date')
         read_only_fields = ('is_active',)
 
 
@@ -36,3 +40,33 @@ class OfferCreateSerializer(serializers.ModelSerializer):
         model = models.Offer
         fields = ('title', 'description', 'is_active', 'category', 'payout', 'price')
         read_only_fields = ('is_active',)
+
+
+class OfferAdminSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.Offer
+        fields = "__all__"
+
+
+class CustomUserOfferSerializer(serializers.ModelSerializer):
+    # Удаляем generated_link из полей сериализатора
+
+    class Meta:
+        model = CustomUserOffer
+        fields = ("id", "user", "offer")
+
+    def create(self, validated_data):
+        user = validated_data['user']
+        offer = validated_data['offer']
+
+        # Генерируем случайную строку длиной 10 символов для generated_link
+        generated_link = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
+
+        custom_user_offer = CustomUserOffer.objects.create(
+            user=user,
+            offer=offer,
+            generated_link=generated_link,
+        )
+
+        return custom_user_offer
