@@ -29,7 +29,7 @@ class OfferDetailSerializer(OfferListSerializer):
 
     class Meta:
         model = models.Offer
-        fields = ('id', 'title', 'is_active', 'description', 'category', 'payout', 'price', 'creation_date')
+        fields = ('id', 'title', 'is_active', 'description', 'category', 'payout', 'price', 'creation_date', "is_vip")
         read_only_fields = ('is_active',)
 
 

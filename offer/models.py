@@ -23,6 +23,7 @@ class Offer(models.Model):
     payout = models.DecimalField(max_digits=7, decimal_places=2)
     creation_date = models.DateTimeField(auto_now_add=True, null=True)
     brand = models.ForeignKey("user.CustomUser", related_name="offer", on_delete=models.CASCADE, null=True)
+    is_vip = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return f"{self.title}"
