@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
-from user.permissions import AllowUnauthenticatedOnly
+from user.permissions import AllowUnauthenticatedOnly, IsAdministratorUser
 from user.serializers import UserSerializer, UserBrandSerializer, UserInfluencerSerializer, UserForAdminsSerializer
 
 
@@ -33,4 +33,4 @@ class MyProfileView(generics.RetrieveUpdateAPIView):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = get_user_model().objects.all()
     serializer_class = UserForAdminsSerializer
-    permission_classes = (IsAdminUser,)
+    permission_classes = (IsAdministratorUser,)
